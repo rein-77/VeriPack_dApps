@@ -2,7 +2,7 @@
   "canisters": {
     "VeriPact_backend": {
       "candid": "src/VeriPact_backend/VeriPact_backend.did",
-      "package": "VeriPact_backend",
+      "package": "veri_pact_backend",
       "type": "rust"
     },
     "VeriPact_frontend": {

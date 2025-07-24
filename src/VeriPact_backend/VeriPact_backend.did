@@ -1,3 +1,84 @@
+type CharityProject = record {
+    id : nat64;
+    owner : principal;
+    name : text;
+    description : text;
+    total_received : nat64;
+    proposals : vec nat64;
+    created_at : nat64;
+};
+
+type DonationRecord = record {
+    timestamp : nat64;
+    amount : nat64;
+};
+
+type Donor = record {
+    id : principal;
+    total_donations : nat64;
+    voting_power : nat64;
+    donation_history : vec DonationRecord;
+};
+
+type FundingProposal = record {
+    id : nat64;
+    creator : principal;
+    title : text;
+    description : text;
+    recipient : principal;
+    amount : nat64;
+    status : ProposalStatus;
+    votes : vec Vote;
+    yes_votes : nat64;
+    no_votes : nat64;
+    created_at : nat64;
+    expires_at : nat64;
+    executed_at : opt nat64;
+};
+
+type GovernanceSettings = record {
+    min_proposal_duration : nat64;
+    quorum_percentage : nat8;
+    approval_threshold : nat8;
+};
+
+type ProposalStatus = variant {
+    Active;
+    Approved;
+    Rejected;
+    Executed;
+    Cancelled;
+};
+
+type Vote = record {
+    donor : principal;
+    voting_power : nat64;
+    approved : bool;
+    timestamp : nat64;
+};
+
 service : {
-    "greet": (text) -> (text) query;
-}
+    // Donation Management
+    "donate" : () -> (variant { Ok : text; Err : text });
+
+    // Proposal Management
+    "create_proposal" : (text, text, principal, nat64, nat64) -> (variant { Ok : nat64; Err : text });
+    "vote_on_proposal" : (nat64, bool) -> (variant { Ok : text; Err : text });
+    "execute_proposal" : (nat64) -> (variant { Ok : text; Err : text });
+    
+    // Charity Project Management
+    "register_charity" : (text, text) -> (variant { Ok : nat64; Err : text });
+    
+    // Query Functions
+    "get_donor" : (principal) -> (opt Donor) query;
+    "get_proposal" : (nat64) -> (opt FundingProposal) query;
+    "list_active_proposals" : () -> (vec FundingProposal) query;
+    "list_all_proposals" : () -> (vec FundingProposal) query;
+    "get_charity_project" : (nat64) -> (opt CharityProject) query;
+    "list_charity_projects" : () -> (vec CharityProject) query;
+    "get_treasury_balance" : () -> (nat64) query;
+    "get_governance_settings" : () -> (GovernanceSettings) query;
+    
+    // Admin Functions
+    "update_governance_settings" : (opt nat64, opt nat8, opt nat8) -> (variant { Ok : text; Err : text });
+};
