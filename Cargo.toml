@@ -1,0 +1,5 @@
+[workspace]
+members = [
+    "src/VeriPact_backend"
+]
+resolver = "2"

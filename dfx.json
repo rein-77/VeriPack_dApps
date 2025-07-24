@@ -1,0 +1,27 @@
+{
+  "canisters": {
+    "VeriPact_backend": {
+      "candid": "src/VeriPact_backend/VeriPact_backend.did",
+      "package": "VeriPact_backend",
+      "type": "rust"
+    },
+    "VeriPact_frontend": {
+      "dependencies": [
+        "VeriPact_backend"
+      ],
+      "source": [
+        "src/VeriPact_frontend/dist"
+      ],
+      "type": "assets",
+      "workspace": "VeriPact_frontend"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
